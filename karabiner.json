@@ -4,6 +4,30 @@
             "complex_modifications": {
                 "rules": [
                     {
+                        "description": "⏯ (play/pause) key should only control Music.",
+                        "manipulators": [
+                            {
+                                "from": { "key_code": "f8" },
+                                "to": [{ "shell_command": "osascript -e 'tell application \"Music\" to playpause'" }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Fn+⏯ (play/pause) key should only control Music.",
+                        "enabled": false,
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "f8",
+                                    "modifiers": { "mandatory": ["fn"] }
+                                },
+                                "to": [{ "shell_command": "osascript -e 'tell application \"Music\" to playpause'" }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
                         "description": "double left shift to cap_lock",
                         "manipulators": [
                             {
@@ -70,9 +94,10 @@
                     },
                     {
                         "description": "⏯ (play/pause) key should only control Apple Music.",
+                        "enabled": false,
                         "manipulators": [
                             {
-                                "from": { "key_code": "f8" },
+                                "from": { "key_code": "play_or_pause" },
                                 "to": [{ "shell_command": "osascript -e 'tell application \"Music\" to playpause'" }],
                                 "type": "basic"
                             }
@@ -106,7 +131,7 @@
                         ]
                     },
                     {
-                        "description": "Change right_command+ijkl; to arrow keys",
+                        "description": "Change right_command+ijkl to arrow keys and extended navigation",
                         "manipulators": [
                             {
                                 "from": {
@@ -151,6 +176,72 @@
                                 },
                                 "to": [{ "key_code": "right_arrow" }],
                                 "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "o",
+                                    "modifiers": {
+                                        "mandatory": ["right_command"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [{ "key_code": "right_arrow", "modifiers": ["left_option"] }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "u",
+                                    "modifiers": {
+                                        "mandatory": ["right_command"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [{ "key_code": "left_arrow", "modifiers": ["left_option"] }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "h",
+                                    "modifiers": {
+                                        "mandatory": ["right_command"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [{ "key_code": "left_arrow", "modifiers": ["left_command"] }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "semicolon",
+                                    "modifiers": {
+                                        "mandatory": ["right_command"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [{ "key_code": "right_arrow", "modifiers": ["left_command"] }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "8",
+                                    "modifiers": {
+                                        "mandatory": ["right_command"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [{ "key_code": "up_arrow", "modifiers": ["left_command"] }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "comma",
+                                    "modifiers": {
+                                        "mandatory": ["right_command"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [{ "key_code": "down_arrow", "modifiers": ["left_command"] }],
+                                "type": "basic"
                             }
                         ]
                     },
@@ -171,9 +262,141 @@
                                 "type": "basic"
                             }
                         ]
+                    },
+                    {
+                        "description": "F3 to Ctrl+Shift+Tab (previous tab) in Chrome, Firefox, and Waterfox",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.google\\.Chrome$",
+                                            "^org\\.mozilla\\.firefox$",
+                                            "^net\\.waterfox\\.waterfox$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "from": { "key_code": "f3" },
+                                "to": [
+                                    {
+                                        "key_code": "tab",
+                                        "modifiers": ["left_control", "left_shift"]
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "F4 to Ctrl+Tab (next tab) in Chrome, Firefox, and Waterfox",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.google\\.Chrome$",
+                                            "^org\\.mozilla\\.firefox$",
+                                            "^org\\.mozilla\\.waterfox$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "from": { "key_code": "f4" },
+                                "to": [
+                                    {
+                                        "key_code": "tab",
+                                        "modifiers": ["left_control"]
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "F3 to Cmd+[ in Slack",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.tinyspeck\\.slackmacgap$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "from": { "key_code": "f3" },
+                                "to": [
+                                    {
+                                        "key_code": "open_bracket",
+                                        "modifiers": ["left_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "F4 to Cmd+] in Slack",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.tinyspeck\\.slackmacgap$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "from": { "key_code": "f4" },
+                                "to": [
+                                    {
+                                        "key_code": "close_bracket",
+                                        "modifiers": ["left_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "CapsLock + v to insert code block with clipboard content",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "v",
+                                    "modifiers": { "mandatory": ["left_shift", "left_command", "left_control", "left_option"] }
+                                },
+                                "to": [{ "shell_command": "osascript -e 'set clipboardContent to the clipboard as text' -e 'tell application \"System Events\" to keystroke return & \"```\" & return & clipboardContent & return & \"```\"'" }],
+                                "type": "basic"
+                            }
+                        ]
                     }
                 ]
             },
+            "devices": [
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "product_id": 834,
+                        "vendor_id": 1452
+                    },
+                    "simple_modifications": [
+                        {
+                            "from": { "apple_vendor_top_case_key_code": "keyboard_fn" },
+                            "to": [{ "key_code": "left_control" }]
+                        },
+                        {
+                            "from": { "key_code": "left_control" },
+                            "to": [{ "apple_vendor_top_case_key_code": "keyboard_fn" }]
+                        },
+                        {
+                            "from": { "key_code": "right_option" },
+                            "to": [{ "key_code": "right_control" }]
+                        }
+                    ]
+                }
+            ],
             "fn_function_keys": [
                 {
                     "from": { "key_code": "f3" },
@@ -190,6 +413,18 @@
                 {
                     "from": { "key_code": "f6" },
                     "to": [{ "key_code": "f16" }]
+                },
+                {
+                    "from": { "key_code": "f7" },
+                    "to": [{ "key_code": "f7" }]
+                },
+                {
+                    "from": { "key_code": "f8" },
+                    "to": [{ "key_code": "f8" }]
+                },
+                {
+                    "from": { "key_code": "f9" },
+                    "to": [{ "key_code": "f9" }]
                 }
             ],
             "name": "custom",
